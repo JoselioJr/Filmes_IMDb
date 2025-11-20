@@ -21,10 +21,7 @@ class FilmAdapter extends TypeAdapter<Film> {
       year: fields[1] as int,
       rank: fields[2] as int,
       actors: fields[3] as String,
-      aka: fields[4] as String,
       imgPoster: fields[5] as String,
-      photoWidth: fields[6] as int,
-      photoHeight: fields[7] as int,
     );
   }
 
@@ -40,14 +37,8 @@ class FilmAdapter extends TypeAdapter<Film> {
       ..write(obj.rank)
       ..writeByte(3)
       ..write(obj.actors)
-      ..writeByte(4)
-      ..write(obj.aka)
       ..writeByte(5)
-      ..write(obj.imgPoster)
-      ..writeByte(6)
-      ..write(obj.photoWidth)
-      ..writeByte(7)
-      ..write(obj.photoHeight);
+      ..write(obj.imgPoster);
   }
 
   @override

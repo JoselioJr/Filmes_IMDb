@@ -17,7 +17,7 @@ class Film extends HiveObject {
     int rank;
     @HiveField(3)
     String actors;
-    @HiveField(5)
+    @HiveField(4)
     String imgPoster;
 
     Film({

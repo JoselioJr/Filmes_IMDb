@@ -7,6 +7,7 @@ App Flutter para busca de filmes usando a API do IMDb com sistema de autenticaç
 - **Autenticação de Usuário**: Login e cadastro com persistência local usando Hive
 - **Busca de Filmes**: Integração com API pública do IMDb
 - **Sistema de Favoritos**: Marcar/desmarcar filmes como favoritos com feedback visual
+- **Detalhes do Filme**: Tela completa com informações detalhadas ao clicar no filme
 - **Perfil do Usuário**: Tela de perfil com informações do usuário
 - **Tema Escuro/Claro**: Alternância entre temas com persistência
 - **Gerenciamento de Estado**: Implementado com GetX
@@ -17,8 +18,9 @@ App Flutter para busca de filmes usando a API do IMDb com sistema de autenticaç
 1. **Tela de Login**: Autenticação do usuário
 2. **Tela de Cadastro**: Registro de novos usuários
 3. **Tela Principal**: Busca e listagem de filmes
-4. **Tela de Favoritos**: Visualização dos filmes favoritos
-5. **Tela de Perfil**: Informações do usuário e configurações de tema
+4. **Tela de Detalhes**: Informações completas do filme selecionado
+5. **Tela de Favoritos**: Visualização dos filmes favoritos
+6. **Tela de Perfil**: Informações do usuário e configurações de tema
 
 ## Tecnologias Utilizadas
 
@@ -51,6 +53,7 @@ lib/
 │   ├── login_screen.dart
 │   ├── cadaster_screen.dart
 │   ├── main_screen.dart
+│   ├── movie_detail_screen.dart
 │   ├── favorite_screen.dart
 │   └── user_screen.dart
 ├── services/            # Serviços
@@ -67,6 +70,7 @@ lib/
 ✅ Cadastro de usuários
 ✅ Busca de filmes via API
 ✅ Sistema de favoritos com feedback visual
+✅ Tela de detalhes do filme com navegação
 ✅ Tela de perfil do usuário
 ✅ Tema escuro/claro com persistência
 ✅ Persistência de dados

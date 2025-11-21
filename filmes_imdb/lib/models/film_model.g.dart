@@ -21,14 +21,14 @@ class FilmAdapter extends TypeAdapter<Film> {
       year: fields[1] as int,
       rank: fields[2] as int,
       actors: fields[3] as String,
-      imgPoster: fields[5] as String,
+      imgPoster: fields[4] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, Film obj) {
     writer
-      ..writeByte(8)
+      ..writeByte(5)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
@@ -37,7 +37,7 @@ class FilmAdapter extends TypeAdapter<Film> {
       ..write(obj.rank)
       ..writeByte(3)
       ..write(obj.actors)
-      ..writeByte(5)
+      ..writeByte(4)
       ..write(obj.imgPoster);
   }
 

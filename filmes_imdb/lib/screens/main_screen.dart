@@ -70,7 +70,14 @@ class MainScreen extends StatelessWidget {
                 );
               }
               
-              return ListView.builder(
+              return GridView.builder(
+                padding: const EdgeInsets.all(8.0),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.7,
+                  crossAxisSpacing: 8.0,
+                  mainAxisSpacing: 8.0,
+                ),
                 itemCount: movieController.movies.length,
                 itemBuilder: (context, index) {
                   final movie = movieController.movies[index];

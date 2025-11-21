@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../models/film_model.dart';
 import '../controllers/movie_controller.dart';
+import '../screens/movie_detail_screen.dart';
 
 class MovieCard extends StatelessWidget {
   final Film movie;
@@ -11,67 +12,102 @@ class MovieCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(12.0),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8.0),
-              child: Image.network(
-                movie.imgPoster,
-                width: 80,
-                height: 120,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) {
-                  return Container(
-                    width: 80,
-                    height: 120,
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.movie, size: 40),
-                  );
-                },
-              ),
-            ),
-            const SizedBox(width: 12),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    movie.title,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () => Get.to(() => MovieDetailScreen(movie: movie)),
+      child: Card(
+        margin: const EdgeInsets.all(8.0),
+        child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                ClipRRect(
+                  borderRadius: const BorderRadius.vertical(top: Radius.circular(8.0)),
+                  child: Image.network(
+                    movie.imgPoster,
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
+                        width: double.infinity,
+                        height: double.infinity,
+                        color: Colors.grey[300],
+                        child: const Icon(Icons.movie, size: 60),
+                      );
+                    },
+                  ),
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Obx(() => CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.9),
+                    radius: 20,
+                    child: IconButton(
+                      icon: Icon(
+                        movieController.isFavorite(movie)
+                            ? Icons.favorite
+                            : Icons.favorite_border,
+                        color: movieController.isFavorite(movie)
+                            ? Colors.red
+                            : Colors.grey,
+                        size: 20,
+                      ),
+                      onPressed: () => movieController.toggleFavorite(movie),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text('Ano: ${movie.year}'),
-                  const SizedBox(height: 4),
-                  Text('Rank: ${movie.rank}'),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Atores: ${movie.actors}',
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                  ),
-                ],
-              ),
+                  )),
+                ),
+              ],
             ),
-            Obx(() => IconButton(
-              icon: Icon(
-                movieController.isFavorite(movie)
-                    ? Icons.favorite
-                    : Icons.favorite_border,
-                color: movieController.isFavorite(movie)
-                    ? Colors.red
-                    : Colors.grey,
-              ),
-              onPressed: () => movieController.toggleFavorite(movie),
-            )),
-          ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  movie.title,
+                  style: const TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 4),
+                Row(
+                  children: [
+                    Text(
+                      '${movie.year}',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: Colors.orange,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        '#${movie.rank}',
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ],
         ),
       ),
     );

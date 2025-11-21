@@ -8,6 +8,14 @@ class HiveService {
 
   static Future<void> init() async {
     await Hive.initFlutter();
+    
+    // Limpar dados corrompidos se existirem
+    try {
+      await Hive.deleteBoxFromDisk(favoritesBox);
+    } catch (e) {
+      // Ignora se a box não existir
+    }
+    
     Hive.registerAdapter(UserAdapter());
     Hive.registerAdapter(FilmAdapter());
     await Hive.openBox<User>(usersBox);

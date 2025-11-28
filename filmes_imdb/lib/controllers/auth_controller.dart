@@ -10,14 +10,19 @@ class AuthController extends GetxController {
 
   Future<bool> login(String name, String password) async {
     isLoading.value = true;
-    final user = HiveService.authenticateUser(name, password);
-    if (user != null) {
-      currentUser.value = user;
+    try {
+      final user = await HiveService.authenticateUser(name, password);
+      if (user != null) {
+        currentUser.value = user;
+        isLoading.value = false;
+        return true;
+      }
       isLoading.value = false;
-      return true;
+      return false;
+    } catch (e) {
+      isLoading.value = false;
+      return false;
     }
-    isLoading.value = false;
-    return false;
   }
 
   Future<bool> register(String name, String password) async {

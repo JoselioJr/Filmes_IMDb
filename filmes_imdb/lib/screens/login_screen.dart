@@ -4,12 +4,25 @@ import '../controllers/auth_controller.dart';
 import 'cadaster_screen.dart';
 import 'main_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final AuthController authController = Get.put(AuthController());
   final TextEditingController nameController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
 
-  LoginScreen({super.key});
+  @override
+  void dispose() {
+    nameController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,20 +38,39 @@ class LoginScreen extends StatelessWidget {
               height: 200.0,
               child: Image.asset('images/imdb_logo.png'),
             ),
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(
-                labelText: 'Nome',
-                border: OutlineInputBorder(),
-              ),
-            ),
-            const SizedBox(height: 16),
-            TextField(
-              controller: passwordController,
-              obscureText: true,
-              decoration: const InputDecoration(
-                labelText: 'Senha',
-                border: OutlineInputBorder(),
+            Form(
+              key: _formKey,
+              child: Column(
+                children: [
+                  TextFormField(
+                    controller: nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Nome',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Nome é obrigatório';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: passwordController,
+                    obscureText: true,
+                    decoration: const InputDecoration(
+                      labelText: 'Senha',
+                      border: OutlineInputBorder(),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.trim().isEmpty) {
+                        return 'Senha é obrigatória';
+                      }
+                      return null;
+                    },
+                  ),
+                ],
               ),
             ),
             const SizedBox(height: 24),
@@ -46,19 +78,21 @@ class LoginScreen extends StatelessWidget {
                 ? const CircularProgressIndicator()
                 : ElevatedButton(
                     onPressed: () async {
-                      final success = await authController.login(
-                        nameController.text,
-                        passwordController.text,
-                      );
-                      if (success) {
-                        Get.offAll(() => MainScreen());
-                      } else {
-                        Get.snackbar(
-                          'Erro',
-                          'Usuário ou senha inválidos',
-                          backgroundColor: Colors.red,
-                          colorText: Colors.white,
+                      if (_formKey.currentState!.validate()) {
+                        final success = await authController.login(
+                          nameController.text.trim(),
+                          passwordController.text.trim(),
                         );
+                        if (success) {
+                          Get.offAll(() => MainScreen());
+                        } else {
+                          Get.snackbar(
+                            'Erro',
+                            'Usuário ou senha inválidos',
+                            backgroundColor: Colors.red,
+                            colorText: Colors.white,
+                          );
+                        }
                       }
                     },
                     child: const Text('Entrar'),
